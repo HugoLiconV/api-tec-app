@@ -1,6 +1,8 @@
 import { Router } from 'express'
 import user from './user'
 import auth from './auth'
+import news from './news'
+import bookmark from './bookmark'
 
 const router = new Router()
 
@@ -29,5 +31,10 @@ const router = new Router()
  */
 router.use('/users', user)
 router.use('/auth', auth)
+router.use('/news', news)
+router.use('/bookmarks', bookmark)
+router.use('/', (req, res) => {
+  res.status(200).json({message: 'ok'})
+})
 
 export default router
