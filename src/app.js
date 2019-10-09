@@ -1,6 +1,8 @@
 import http from 'http'
-import { env, mongo, port, ip, apiRoot } from './config'
+import OneSignal from 'onesignal-node'
+import { env, mongo, port, ip, apiRoot, userAuthKey, appAuthKey, appId } from './config'
 import mongoose from './services/mongoose'
+import {oneSignalClient} from './services/one-signal'
 import express from './services/express'
 import api from './api'
 
