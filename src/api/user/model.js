@@ -5,6 +5,15 @@ import mongooseKeywords from 'mongoose-keywords'
 import { env } from '../../config'
 
 const roles = ['user', 'admin']
+const careers = [
+  'informatica',
+  'diseno_industrial',
+  'administracion',
+  'gestion',
+  'industrial',
+  'arquitectura',
+  'sistemas'
+]
 
 const userSchema = new Schema({
   email: {
@@ -24,6 +33,13 @@ const userSchema = new Schema({
     type: String,
     index: true,
     trim: true
+  },
+  career: {
+    type: String,
+    required: true,
+    index: true,
+    trim: true,
+    enum: careers
   },
   role: {
     type: String,
@@ -66,7 +82,7 @@ userSchema.pre('save', function (next) {
 userSchema.methods = {
   view (full) {
     let view = {}
-    let fields = ['id', 'name', 'picture']
+    let fields = ['id', 'name', 'picture', 'career']
 
     if (full) {
       fields = [...fields, 'email', 'createdAt']
