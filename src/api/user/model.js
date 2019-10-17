@@ -5,7 +5,7 @@ import mongooseKeywords from 'mongoose-keywords'
 import { env } from '../../config'
 
 const roles = ['user', 'admin']
-const careers = [
+export const careers = [
   'informatica',
   'diseno_industrial',
   'administracion',
@@ -99,7 +99,8 @@ userSchema.methods = {
 }
 
 userSchema.statics = {
-  roles
+  roles,
+  careers
 }
 
 userSchema.plugin(mongooseKeywords, { paths: ['email', 'name'] })

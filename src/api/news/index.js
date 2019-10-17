@@ -4,10 +4,11 @@ import { middleware as body } from 'bodymen'
 import { token } from '../../services/passport'
 import { create, index, show, update, destroy } from './controller'
 import { schema } from './model'
+import { sendPushNotification } from "../../services/one-signal/index";
 export News, { schema } from './model'
 
 const router = new Router()
-const { title, content, image } = schema.tree
+const { title, content, image, tags } = schema.tree
 
 /**
  * @api {post} /news Create news
@@ -23,16 +24,13 @@ const { title, content, image } = schema.tree
  * @apiError 404 News not found.
  * @apiError 401 admin access only.
  */
-/**router.post('/',
-  token({ required: true, roles: ['admin'] }),
-  body({ title, content, image }),
-  create)
-  */
 
-  router.post('/',
+  router.post(
+  '/',
   token({ required: true, roles: ['admin'] }),
-  body({ title, content, image }),
-  create)
+  body({ title, content, image, tags }),
+  create
+)
 
 /**
  * @api {get} /news Retrieve news
@@ -80,10 +78,12 @@ router.get('/:id',
  * @apiError 404 News not found.
  * @apiError 401 admin access only.
  */
-router.put('/:id',
-  token({ required: true, roles: ['admin'] }),
-  body({ title, content, image }),
-  update)
+router.put(
+  "/:id",
+  token({ required: true, roles: ["admin"] }),
+  body({ title, content, image, tags }),
+  update
+);
 
 /**
  * @api {delete} /news/:id Delete news

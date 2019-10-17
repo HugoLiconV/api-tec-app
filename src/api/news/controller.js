@@ -1,22 +1,14 @@
 import { success, notFound } from '../../services/response/'
 import { News } from '.'
+import { sendPushNotification } from '../../services/one-signal'
 
-
-// export const firstNotification = new OneSignal.Notification({      
-//   contents: {      
-//       en: "Test notification",      
-//       tr: "Test mensaje"      
-//   }
-// });
-
-// // Add a new target after creating initial notification body    
-// firstNotification.postBody["include_player_ids"].push["3aa608f2-c6a1-11e3-851d-000c2940e62c"]    
-
-export const create = ({ bodymen: { body } }, res, next) =>
-  News.create(body)
+export const create = ({ bodymen: { body } }, res, next) => {
+  return News.create(body)
+    .then(sendPushNotification)
     .then((news) => news.view(true))
     .then(success(res, 201))
     .catch(next)
+}
 
 export const index = ({ querymen: { query, select, cursor } }, res, next) =>
   News.count(query)
