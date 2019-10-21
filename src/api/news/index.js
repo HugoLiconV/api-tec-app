@@ -1,13 +1,20 @@
 import { Router } from 'express'
-import { middleware as query } from 'querymen'
+import querymen, { middleware as query } from 'querymen'
 import { middleware as body } from 'bodymen'
 import { token } from '../../services/passport'
 import { create, index, show, update, destroy } from './controller'
 import { schema } from './model'
 export News, { schema } from './model'
 
+const customSchema = new querymen.Schema({
+  $text: {
+    type: String,
+    operator: '$search'
+  }
+})
+
 const router = new Router()
-const { title, content, image } = schema.tree
+const { title, content, image, tags } = schema.tree
 
 /**
  * @api {post} /news Create news
@@ -23,16 +30,13 @@ const { title, content, image } = schema.tree
  * @apiError 404 News not found.
  * @apiError 401 admin access only.
  */
-/**router.post('/',
-  token({ required: true, roles: ['admin'] }),
-  body({ title, content, image }),
-  create)
-  */
 
-  router.post('/',
+router.post(
+  '/',
   token({ required: true, roles: ['admin'] }),
-  body({ title, content, image }),
-  create)
+  body({ title, content, image, tags }),
+  create
+)
 
 /**
  * @api {get} /news Retrieve news
@@ -46,10 +50,7 @@ const { title, content, image } = schema.tree
  * @apiError {Object} 400 Some parameters may contain invalid values.
  * @apiError 401 user access only.
  */
-router.get('/',
-  token({ required: true }),
-  query(),
-  index)
+router.get('/', token({ required: true }), query(customSchema), index)
 
 /**
  * @api {get} /news/:id Retrieve news
@@ -80,10 +81,12 @@ router.get('/:id',
  * @apiError 404 News not found.
  * @apiError 401 admin access only.
  */
-router.put('/:id',
+router.put(
+  '/:id',
   token({ required: true, roles: ['admin'] }),
-  body({ title, content, image }),
-  update)
+  body({ title, content, image, tags }),
+  update
+)
 
 /**
  * @api {delete} /news/:id Delete news

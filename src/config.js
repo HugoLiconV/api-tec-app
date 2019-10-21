@@ -28,9 +28,9 @@ const config = {
     apiRoot: process.env.API_ROOT || '',
     masterKey: requireProcessEnv('MASTER_KEY'),
     jwtSecret: requireProcessEnv('JWT_SECRET'),
-    // userAuthKey: requireProcessEnv('USER_AUTH_KEY'),
-    // appAuthKey: requireProcessEnv('APP_AUTH_KEY'),
-    // appId: requireProcessEnv('ONE_SIGNAL_APP_ID'),
+    userAuthKey: requireProcessEnv('USER_AUTH_KEY'),
+    appAuthKey: requireProcessEnv('APP_AUTH_KEY'),
+    appId: requireProcessEnv('APP_ID'),
     mongo: {
       options: {
         db: {
@@ -39,7 +39,7 @@ const config = {
       }
     }
   },
-  test: { },
+  test: {},
   development: {
     mongo: {
       uri: 'mongodb://localhost/api-app-tec-dev',

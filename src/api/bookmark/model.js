@@ -1,4 +1,4 @@
-  import mongoose, { Schema } from 'mongoose'
+import mongoose, { Schema } from 'mongoose'
 
 const bookmarkSchema = new Schema({
   user: {
@@ -24,16 +24,18 @@ bookmarkSchema.methods = {
     const view = {
       // simple view
       id: this.id,
-      user: this.user.view(full),
-      news: this.news.view(full),
       createdAt: this.createdAt,
-      updatedAt: this.updatedAt
+      updatedAt: this.updatedAt,
+      news: this.news && this.news.view(full),
+      user: this.user && this.user.view(full)
     }
 
-    return full ? {
-      ...view
-      // add properties for a full view
-    } : view
+    return full
+      ? {
+        ...view
+        // add properties for a full view
+      }
+      : view
   }
 }
 

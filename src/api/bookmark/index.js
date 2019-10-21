@@ -1,5 +1,6 @@
 import { Router } from 'express'
-import { middleware as query } from 'querymen'
+import { Schema } from 'mongoose';
+import querymen, { middleware as query } from 'querymen'
 import { middleware as body } from 'bodymen'
 import { token } from '../../services/passport'
 import { create, index, show, update, destroy } from './controller'
@@ -8,6 +9,15 @@ export Bookmark, { schema } from './model'
 
 const router = new Router()
 const { news } = schema.tree
+const customSchema = new querymen.Schema(
+  {
+    news_id: {
+      type: Schema.ObjectId,
+      paths: ['news'],
+      operator: '$eq'
+    }
+  }
+)
 
 /**
  * @api {post} /bookmarks Create bookmark
@@ -40,7 +50,7 @@ router.post('/',
  */
 router.get('/',
   token({ required: true }),
-  query(),
+  query(customSchema),
   index)
 
 /**
