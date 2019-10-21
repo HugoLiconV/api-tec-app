@@ -10,7 +10,7 @@ import { env } from '../../config'
 
 export default (apiRoot, routes) => {
   const app = express()
-
+  app.use(require('express-status-monitor')())
   /* istanbul ignore next */
   if (env === 'production') {
     app.set('forceSSLOptions', {

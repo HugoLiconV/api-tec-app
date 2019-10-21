@@ -1,11 +1,17 @@
 import { Router } from 'express'
-import { middleware as query } from 'querymen'
+import querymen, { middleware as query } from 'querymen'
 import { middleware as body } from 'bodymen'
 import { token } from '../../services/passport'
 import { create, index, show, update, destroy } from './controller'
 import { schema } from './model'
-import { sendPushNotification } from "../../services/one-signal/index";
 export News, { schema } from './model'
+
+const customSchema = new querymen.Schema({
+  $text: {
+    type: String,
+    operator: '$search'
+  }
+})
 
 const router = new Router()
 const { title, content, image, tags } = schema.tree
@@ -25,7 +31,7 @@ const { title, content, image, tags } = schema.tree
  * @apiError 401 admin access only.
  */
 
-  router.post(
+router.post(
   '/',
   token({ required: true, roles: ['admin'] }),
   body({ title, content, image, tags }),
@@ -44,10 +50,7 @@ const { title, content, image, tags } = schema.tree
  * @apiError {Object} 400 Some parameters may contain invalid values.
  * @apiError 401 user access only.
  */
-router.get('/',
-  token({ required: true }),
-  query(),
-  index)
+router.get('/', token({ required: true }), query(customSchema), index)
 
 /**
  * @api {get} /news/:id Retrieve news
@@ -79,11 +82,11 @@ router.get('/:id',
  * @apiError 401 admin access only.
  */
 router.put(
-  "/:id",
-  token({ required: true, roles: ["admin"] }),
+  '/:id',
+  token({ required: true, roles: ['admin'] }),
   body({ title, content, image, tags }),
   update
-);
+)
 
 /**
  * @api {delete} /news/:id Delete news

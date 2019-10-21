@@ -29,11 +29,11 @@ const newsSchema = new Schema(
     toJSON: {
       virtuals: true,
       transform: (obj, ret) => {
-        delete ret._id;
+        delete ret._id
       }
     }
   }
-);
+)
 
 newsSchema.methods = {
   view (full) {
@@ -60,6 +60,9 @@ newsSchema.plugin(mongooseKeywords, { paths: ['tags'] })
 newsSchema.statics = {
   careers
 }
+newsSchema.index({
+  title: 'text'
+})
 
 const model = mongoose.model('News', newsSchema)
 
