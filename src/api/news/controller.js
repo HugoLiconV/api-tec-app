@@ -10,17 +10,20 @@ export const create = ({ bodymen: { body } }, res, next) => {
     .catch(next)
 }
 
-export const index = ({ querymen: { query, select, cursor } }, res, next) =>{
-  console.log("TCL: index -> cursor", cursor)
+export const index = ({ querymen: { query, select, cursor }, ...req }, res, next) =>{
+  const newCursor = { ...req.query, ...cursor }
+  if (newCursor.skip) {
+    newCursor.skip = parseInt(newCursor.skip)
+  }
   return News.count(query)
-    .then(count => News.find(query, select, cursor)
-      .then((news) => ({
+    .then(count =>
+      News.find(query, select, newCursor).then(news => ({
         count,
-        rows: news.map((news) => news.view())
+        rows: news.map(news => news.view())
       }))
     )
     .then(success(res))
-    .catch(next)
+    .catch(next);
 }
 
 export const show = ({ params }, res, next) =>
