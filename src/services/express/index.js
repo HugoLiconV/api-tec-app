@@ -13,11 +13,11 @@ export default (apiRoot, routes) => {
   app.use(require('express-status-monitor')())
   /* istanbul ignore next */
   if (env === 'production') {
-    app.set('forceSSLOptions', {
-      enable301Redirects: false,
-      trustXFPHeader: true
-    })
-    app.use(forceSSL)
+    //app.set('forceSSLOptions', {
+     // enable301Redirects: false,
+      //trustXFPHeader: true
+    //})
+    //app.use(forceSSL)
   }
 
   /* istanbul ignore next */

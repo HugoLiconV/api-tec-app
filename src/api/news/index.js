@@ -6,12 +6,17 @@ import { create, index, show, update, destroy } from './controller'
 import { schema } from './model'
 export News, { schema } from './model'
 
-const customSchema = new querymen.Schema({
-  $text: {
-    type: String,
-    operator: '$search'
+const customSchema = new querymen.Schema(
+  {
+    $text: {
+      type: String,
+      operator: '$search'
+    }
+  },
+  {
+    page: false
   }
-})
+)
 
 const router = new Router()
 const { title, content, image, tags } = schema.tree

@@ -10,8 +10,9 @@ export const create = ({ bodymen: { body } }, res, next) => {
     .catch(next)
 }
 
-export const index = ({ querymen: { query, select, cursor } }, res, next) =>
-  News.count(query)
+export const index = ({ querymen: { query, select, cursor } }, res, next) =>{
+  console.log("TCL: index -> cursor", cursor)
+  return News.count(query)
     .then(count => News.find(query, select, cursor)
       .then((news) => ({
         count,
@@ -20,6 +21,7 @@ export const index = ({ querymen: { query, select, cursor } }, res, next) =>
     )
     .then(success(res))
     .catch(next)
+}
 
 export const show = ({ params }, res, next) =>
   News.findById(params.id)
