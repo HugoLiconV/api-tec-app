@@ -39,6 +39,9 @@
     "sinon": "^4.0.1",
     "supertest": "^3.0.0"
   },
+  "engines": {
+    "npm": "10.x"
+  },
   "dependencies": {
     "babel-core": "^6.26.0",
     "babel-plugin-transform-runtime": "^6.23.0",
